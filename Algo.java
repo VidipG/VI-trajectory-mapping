@@ -48,27 +48,32 @@ public class Algo {
   
   double deltaV = (maxV - Vo) / n;
   double deltaI = (maxI - Io) / n;
-}
-
-
-class Cell{
-  double leftPoint;
-  double rightPoint;
-  int binP;
   
-  Cell(double leftPoint, double rightPoint, int binP) {
-    this.leftPoint = leftPoint;
-    this.rightPoint = rightPoint;
-    this.binP = binP;
-  }
-}
-
-class Point {
-  double vPoint;
-  double iPoint;
-  
-  Point(double vPoint, double iPoint) {
-    this.vPoint = vPoint;
-    this.iPoint = iPoint;
+  public void generateSequences() {
+    int temp = this.n - 1;
+    
+    for (int i = 0; i <= temp; i++) {
+      double currV = Vo - (this.n - i) * deltaV;
+      double currI = Io - (this.n - i) * deltaI; 
+      
+      VSeq.add(currV);
+      ISeq.add(currI);
+    }
+    
+    for (int i = temp; i > 0; i++) {
+      double currV = Vo + (this.n - i) * deltaV;
+      double currI = Io + (this.n - i) * deltaI; 
+      
+      VSeq.add(currV);
+      ISeq.add(currI);
+    }
+    if (this.VSeq.size() != 2 * this.n) {
+      throw new RuntimeException("Length of VSeq is wrong");
+    }
+    
+    if (this.ISeq.size() != 2 * this.n) {
+      throw new RuntimeException("Length of ISeq is wrong");
+    }
+    
   }
 }
