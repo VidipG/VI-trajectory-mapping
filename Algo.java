@@ -1,71 +1,67 @@
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class Algo {
-  ArrayList<Point> traj = new ArrayList<Point>();
+  ArrayList<Point> originalTraj = new ArrayList<Point>();
+  
   ArrayList<Double> VSeq = new ArrayList<Double>();
   ArrayList<Double> ISeq = new ArrayList<Double>();
-  int n;
   
-
+  ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
   
-  double maxV = traj.get(0).vPoint;
-  double minV = traj.get(0).vPoint;
+  int n = 10;
   
-  double maxI = traj.get(0).iPoint;
-  double minI = traj.get(0).iPoint;
+  double maxV;
+  double minV;
   
-  void calculatestuff() {
-  for (Point currP : traj) {
-    if (currP.vPoint > maxV) {
-      maxV = currP.vPoint;
-    } else if (currP.vPoint <= minV) {
-      minV = currP.vPoint;
-    } else if (currP.iPoint > maxI) {
-      maxI = currP.iPoint;
-    } else if (currP.iPoint <= minI) {
-      minI = currP.iPoint;
+  double maxI;
+  double minI; 
+  
+  <T extends Comparable<Point>> void findMinMax() {
+    final ListIterator<Point> itr = this.originalTraj.listIterator();
+    Point next = itr.next();
+    maxV = next.vPoint;
+    minV = next.vPoint;
+    maxI = next.iPoint;
+    minI = next.iPoint;
+    
+    
+    while (itr.hasNext()) {
+      final Point currP = itr.next();
+      
+      if (currP.vPoint > maxV) {
+        maxV = currP.vPoint;
+      } else if (currP.vPoint <= minV) {
+        minV = currP.vPoint;
+      }
+      
+      if (currP.iPoint > maxI) {
+        maxI = currP.iPoint;
+      } else if (currP.iPoint <= minI) {
+        minI = currP.iPoint;
+      }
     }
   }
- }
   
   double Vo = 0.5 * (maxV + minV);
   double Io = 0.5 * (maxI + minI);
-
+  
   double deltaV = (maxV - Vo) / n;
   double deltaI = (maxI - Io) / n;
-  
-  void generateSeq1() {
-    this.n = 10;
-    int i = 0;
-    while (i > 0) {
-      
-    }
-    
-  }
-  
-  ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
 }
-
 
 
 class Cell{
   double leftPoint;
   double rightPoint;
   int binP;
+  
+  Cell(double leftPoint, double rightPoint, int binP) {
+    this.leftPoint = leftPoint;
+    this.rightPoint = rightPoint;
+    this.binP = binP;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 class Point {
   double vPoint;
