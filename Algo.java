@@ -126,12 +126,20 @@ public class Algo {
     halfCycle.remove(0);
   }
   
-  void searchNeighbours(Cell startPoint, Cell winner) {
-    int currX = startPoint.posx;
-    int currY = startPoint.posy;
-    if ((currX > 0 && currX < 4) &&
-        (currY > 0 && currY < 4)) {
-      
+  void searchNeighbours(Cell winner) {
+    Utils u = new Utils();
+    int currX = winner.posx;
+    int currY = winner.posy;
+    if ((currX > 0 && currX < this.n - 1) &&
+        (currY > 0 && currY < this.n - 1)) {
+      u.topLeft(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.topRight(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.top(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.left(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.right(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.bottomLeft(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.bottom(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
+      u.bottomRight(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
     }
   }
   
@@ -148,19 +156,11 @@ public class Algo {
     for (int i = 0; i <= this.halfCycle.size(); i++) {
       this.setWinner(this.halfCycle.get(i));
       if (i > 0) {
-        this.searchNeighbours(this.halfCycle.get(i), this.winner);
+        this.searchNeighbours(this.winner);
       }
     }
   }
 }
-
-
-
-
-
-
-
-
 
 
 

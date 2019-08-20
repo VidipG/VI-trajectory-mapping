@@ -31,4 +31,4 @@ class Point {
     this.vPoint = vPoint;
     this.iPoint = iPoint;
   }
-}
+} 
