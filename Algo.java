@@ -2,24 +2,35 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class Algo {
+  //Aggregate sample
   ArrayList<Point> originalTraj = new ArrayList<Point>();
   
   ArrayList<Double> VSeq = new ArrayList<Double>();
   ArrayList<Double> ISeq = new ArrayList<Double>();
   
-  ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
   
-  int n = 10;
+  //current and voltage values need to be normalized
+  ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
   
   double maxV;
   double minV;
   
   double maxI;
-  double minI; 
+  double minI;
   
+  //need a setter function for n, based on the input sample
+  //n refers to the size of the graph on the x-axis (time)
+  //n will likely depend on the time of the sample
+  int n = 10;
+  
+  Cell winner;
+  Cell startCell = new Cell(0, 0);
+  
+  //find min and max values of V and I in originalTraj
   <T extends Comparable<Point>> void findMinMax() {
-    final ListIterator<Point> itr = this.originalTraj.listIterator();
+    ListIterator<Point> itr = this.originalTraj.listIterator();
     Point next = itr.next();
+    
     maxV = next.vPoint;
     minV = next.vPoint;
     maxI = next.iPoint;
@@ -49,6 +60,7 @@ public class Algo {
   double deltaV = (maxV - Vo) / n;
   double deltaI = (maxI - Io) / n;
   
+  //this step might be redundant
   public void generateSequences() {
     int temp = this.n - 1;
     
@@ -60,7 +72,7 @@ public class Algo {
       ISeq.add(currI);
     }
     
-    for (int i = temp; i > 0; i++) {
+    for (int i = temp; i > 0; i--) {
       double currV = Vo + (this.n - i) * deltaV;
       double currI = Io + (this.n - i) * deltaI; 
       
@@ -74,6 +86,61 @@ public class Algo {
     if (this.ISeq.size() != 2 * this.n) {
       throw new RuntimeException("Length of ISeq is wrong");
     }
+  }
+  
+  //sets positional values for every Cell in the grid
+  void populateGrid() {
+    for (int i = 0; i <= 2 * n; i++) { //column
+      for (int j = 0; j <= 2 * n; j++) { //row
+        Cell currCell = this.grid.get(i).get(j);
+        
+        currCell.leftPoint = (Vo + deltaV * (i - n));
+        currCell.rightPoint = (Io + deltaI * (j - n));
+        currCell.binP = 0;
+      }
+    }
+  }
+  
+  //populateGrid() needs to start from zero-crossing point
+  void populateGridPart() {
+    //startcell needs to be set to the first zero crossing point
+    //need a setter function for this.startCell based on input data from hardware
+    int y = (int)this.startCell.leftPoint;
+    int z = (int)this.startCell.rightPoint;
     
+    for (int i = this.n + 1; i <= 2 * this.n; i++) {
+      Cell currCell = this.grid.get(this.n + 1).get(i);
+      
+      if ((y - this.Vo) < (this.deltaV / 2) &&
+          (z - (this.Io + (i - this.n) * this.deltaI)) < (this.deltaI / 2)) {
+        currCell.binP = 1;
+        this.winner = currCell;
+      }
+    }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
