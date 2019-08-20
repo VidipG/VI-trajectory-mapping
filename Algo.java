@@ -12,6 +12,8 @@ public class Algo {
   //current and voltage values need to be normalized
   ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
   
+  ArrayList<Cell> halfCycle;
+  
   double maxV;
   double minV;
   
@@ -24,6 +26,9 @@ public class Algo {
   int n = 10;
   
   Cell winner;
+  
+  //temporary fix, needs to be included in the halfCycle ArrayList 
+  //(15), (110)
   Cell startCell = new Cell(0, 0);
   
   //find min and max values of V and I in originalTraj
@@ -89,7 +94,7 @@ public class Algo {
   }
   
   //sets positional values for every Cell in the grid
-  void populateGrid() {
+  void initializeGrid() {
     for (int i = 0; i <= 2 * n; i++) { //column
       for (int j = 0; j <= 2 * n; j++) { //row
         Cell currCell = this.grid.get(i).get(j);
@@ -102,11 +107,19 @@ public class Algo {
   }
   
   //populateGrid() needs to start from zero-crossing point
-  void populateGridPart() {
+  void setWinner() {
+    //halfCycle of data points, starting at zero-crossing point
+    //need a getter function for this, based on hardware input
+    this.halfCycle = new ArrayList<Cell>();
+    
+    //this step is only a temporary fix, needs to be implemented
+    //in the above mentioned getter function
+    this.halfCycle.add(0, this.startCell);
+    
     //startcell needs to be set to the first zero crossing point
     //need a setter function for this.startCell based on input data from hardware
-    int y = (int)this.startCell.leftPoint;
-    int z = (int)this.startCell.rightPoint;
+    int y = (int)halfCycle.get(0).leftPoint;
+    int z = (int)halfCycle.get(0).rightPoint;
     
     for (int i = this.n + 1; i <= 2 * this.n; i++) {
       Cell currCell = this.grid.get(this.n + 1).get(i);
@@ -117,6 +130,11 @@ public class Algo {
         this.winner = currCell;
       }
     }
+    halfCycle.remove(0);
+  }
+  
+  <T extends Comparable<Cell>> void completePopulationGrid() {
+    
   }
 }
 
