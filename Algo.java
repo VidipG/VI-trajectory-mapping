@@ -26,10 +26,10 @@ public class Algo {
   int n = 10;
   
   Cell winner;
-  
-  //temporary fix, needs to be included in the halfCycle ArrayList 
-  //(15), (110)
-  Cell startCell = new Cell(0, 0);
+
+  //startcell needs to be set to the first zero crossing point
+  //need a setter function for this.startCell based on input data from hardware
+  Cell startCell = new Cell(0, 0, 0, 0);
   
   //find min and max values of V and I in originalTraj
   <T extends Comparable<Point>> void findMinMax() {
@@ -102,24 +102,17 @@ public class Algo {
         currCell.leftPoint = (Vo + deltaV * (i - n));
         currCell.rightPoint = (Io + deltaI * (j - n));
         currCell.binP = 0;
+        currCell.posx = i;
+        currCell.posy = j;
       }
     }
   }
   
   //populateGrid() needs to start from zero-crossing point
-  void setWinner() {
-    //halfCycle of data points, starting at zero-crossing point
-    //need a getter function for this, based on hardware input
-    this.halfCycle = new ArrayList<Cell>();
-    
-    //this step is only a temporary fix, needs to be implemented
-    //in the above mentioned getter function
-    this.halfCycle.add(0, this.startCell);
-    
-    //startcell needs to be set to the first zero crossing point
-    //need a setter function for this.startCell based on input data from hardware
-    int y = (int)halfCycle.get(0).leftPoint;
-    int z = (int)halfCycle.get(0).rightPoint;
+  void setWinner(Cell startPoint) {
+   
+    int y = (int)startPoint.leftPoint;
+    int z = (int)startPoint.rightPoint;
     
     for (int i = this.n + 1; i <= 2 * this.n; i++) {
       Cell currCell = this.grid.get(this.n + 1).get(i);
@@ -133,8 +126,31 @@ public class Algo {
     halfCycle.remove(0);
   }
   
+  void searchNeighbours(Cell startPoint, Cell winner) {
+    int currX = startPoint.posx;
+    int currY = startPoint.posy;
+    if ((currX > 0 && currX < 4) &&
+        (currY > 0 && currY < 4)) {
+      
+    }
+  }
+  
   <T extends Comparable<Cell>> void completePopulationGrid() {
     
+    //halfCycle of data points, starting at zero-crossing point
+    //need a getter function for this, based on hardware input
+    this.halfCycle = new ArrayList<Cell>();
+    
+    //this step is only a temporary fix, needs to be implemented
+    //in the getter function
+    this.halfCycle.add(0, this.startCell);
+    
+    for (int i = 0; i <= this.halfCycle.size(); i++) {
+      this.setWinner(this.halfCycle.get(i));
+      if (i > 0) {
+        this.searchNeighbours(this.halfCycle.get(i), this.winner);
+      }
+    }
   }
 }
 
