@@ -132,6 +132,7 @@ public class Algo {
     int currY = winner.posy;
     if ((currX > 0 && currX < this.n - 1) &&
         (currY > 0 && currY < this.n - 1)) {
+      
       u.topLeft(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
       u.topRight(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
       u.top(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
@@ -161,20 +162,3 @@ public class Algo {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
