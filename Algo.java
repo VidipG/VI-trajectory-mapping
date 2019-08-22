@@ -108,8 +108,23 @@ public class Algo {
     }
   }
   
+  void completeGrid() {
+    
+    //halfCycle of data points, starting at zero-crossing point
+    //need a getter function for this, based on hardware readings/data
+    this.halfCycle = new ArrayList<Cell>();
+    
+    //this step is only a temporary fix, needs to be implemented
+    //in the getter function
+    this.halfCycle.add(0, this.startCell);
+    
+    for (int i = 0; i <= this.halfCycle.size(); i++) {
+      this.setWinner(this.halfCycle.get(i), i);
+    }
+  }
+  
   //populateGrid() needs to start from zero-crossing point
-  void setWinner(Cell startPoint) {
+  void setWinner(Cell startPoint, int acc) {
    
     int y = (int)startPoint.leftPoint;
     int z = (int)startPoint.rightPoint;
@@ -122,8 +137,10 @@ public class Algo {
         currCell.binP = 1;
         this.winner = currCell;
       }
+      if (acc > 1) {
+        this.searchNeighbours(this.winner); 
+      }
     }
-    halfCycle.remove(0);
   }
   
   void searchNeighbours(Cell winner) {
@@ -141,24 +158,6 @@ public class Algo {
       u.bottomLeft(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
       u.bottom(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
       u.bottomRight(winner, this.Vo, this.deltaV, this.Io, this.deltaI, this.n, this.grid);
-    }
-  }
-  
-  <T extends Comparable<Cell>> void completePopulationGrid() {
-    
-    //halfCycle of data points, starting at zero-crossing point
-    //need a getter function for this, based on hardware input
-    this.halfCycle = new ArrayList<Cell>();
-    
-    //this step is only a temporary fix, needs to be implemented
-    //in the getter function
-    this.halfCycle.add(0, this.startCell);
-    
-    for (int i = 0; i <= this.halfCycle.size(); i++) {
-      this.setWinner(this.halfCycle.get(i));
-      if (i > 0) {
-        this.searchNeighbours(this.winner);
-      }
     }
   }
 }
