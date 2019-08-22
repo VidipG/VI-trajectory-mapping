@@ -20,10 +20,16 @@ public class Algo {
   double maxI;
   double minI;
   
+  double Vo;
+  double Io;
+  
+  double deltaV;
+  double deltaI;
+  
   //need a setter function for n, based on the input sample
   //n refers to the size of the graph on the x-axis (time)
   //n will likely depend on the time of the sample
-  int n = 10;
+  int n;
   
   Cell winner;
 
@@ -31,8 +37,13 @@ public class Algo {
   //need a setter function for this.startCell based on input data from hardware
   Cell startCell = new Cell(0, 0, 0, 0);
   
+  //needs to work with incoming data, temporary fix
+  public void setN() {
+    this.n = 10;
+  }
+  
   //find min and max values of V and I in originalTraj
-  <T extends Comparable<Point>> void findMinMax() {
+  <T extends Comparable<Point>> void initValues() {
     ListIterator<Point> itr = this.originalTraj.listIterator();
     Point next = itr.next();
     
@@ -59,11 +70,14 @@ public class Algo {
     }
   }
   
-  double Vo = 0.5 * (maxV + minV);
-  double Io = 0.5 * (maxI + minI);
+  public void initVar() {
+    Vo = 0.5 * (maxV + minV);
+    Io = 0.5 * (maxI + minI);
+    deltaV = (maxV - Vo) / n;
+    deltaI = (maxI - Io) / n;
+  }
   
-  double deltaV = (maxV - Vo) / n;
-  double deltaI = (maxI - Io) / n;
+  
   
   //this step might be redundant
   public void generateSequences() {
@@ -137,7 +151,7 @@ public class Algo {
         currCell.binP = 1;
         this.winner = currCell;
       }
-      if (acc > 1) {
+      if (acc >= 1) {
         this.searchNeighbours(this.winner); 
       }
     }
