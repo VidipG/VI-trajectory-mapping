@@ -2,40 +2,42 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 public class Algo {
+  
+  
   //Aggregate sample
-  ArrayList<Point> originalTraj = new ArrayList<Point>();
-  
-  ArrayList<Double> VSeq = new ArrayList<Double>();
-  ArrayList<Double> ISeq = new ArrayList<Double>();
-  
-  
+  ArrayList<Point> originalTraj;
+  ArrayList<Double> VSeq;
+  ArrayList<Double> ISeq;
   //current and voltage values need to be normalized
-  ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
-  
+  ArrayList<ArrayList<Cell>> grid;
   ArrayList<Cell> halfCycle;
-  
   double maxV;
   double minV;
-  
   double maxI;
   double minI;
-  
   double Vo;
   double Io;
-  
   double deltaV;
   double deltaI;
-  
   //need a setter function for n, based on the input sample
   //n refers to the size of the graph on the x-axis (time)
   //n will likely depend on the time of the sample
   int n;
-  
   Cell winner;
-
   //startcell needs to be set to the first zero crossing point
   //need a setter function for this.startCell based on input data from hardware
   Cell startCell = new Cell(0, 0, 0, 0);
+  
+  Algo(ArrayList<Point> originalTraj, ArrayList<Double> VSeq, ArrayList<Double> ISeq, 
+      ArrayList<ArrayList<Cell>> grid, ArrayList<Cell> halfCycle) {
+    this.originalTraj = new ArrayList<Point>();
+    this.VSeq = new ArrayList<Double>();
+    this.ISeq =  new ArrayList<Double>();
+    this .grid = new ArrayList<ArrayList<Cell>>();
+    //halfCycle of data points, starting at zero-crossing point
+    //need a getter function for this, based on hardware readings/data
+    this.halfCycle = new ArrayList<Cell>();
+  }
   
   //needs to work with incoming data, temporary fix
   public void setN() {
@@ -68,6 +70,7 @@ public class Algo {
         minI = currP.iPoint;
       }
     }
+    this.initVar();
   }
   
   public void initVar() {
@@ -111,6 +114,7 @@ public class Algo {
   void initializeGrid() {
     for (int i = 0; i <= 2 * n; i++) { //column
       for (int j = 0; j <= 2 * n; j++) { //row
+        
         Cell currCell = this.grid.get(i).get(j);
         
         currCell.leftPoint = (Vo + deltaV * (i - n));
@@ -123,10 +127,6 @@ public class Algo {
   }
   
   void completeGrid() {
-    
-    //halfCycle of data points, starting at zero-crossing point
-    //need a getter function for this, based on hardware readings/data
-    this.halfCycle = new ArrayList<Cell>();
     
     //this step is only a temporary fix, needs to be implemented
     //in the getter function
