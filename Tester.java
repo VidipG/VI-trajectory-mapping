@@ -2,22 +2,23 @@ import org.junit.Test;
 import org.junit.Before;
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+
 public class Tester {
   Algo algo = new Algo();
   
   @Before
   public void setup() {
-    algo.setN();
     
+    ArrayList<Point> traj = new ArrayList<Point>();
     Point point1 = new Point(0.2, 0.3);
     Point point2 = new Point(0.3, 0.2);
     Point point3 = new Point(0.0, 0.8);
-    algo.originalTraj.add(point1);
-    algo.originalTraj.add(point2);
-    algo.originalTraj.add(point3);
-    algo.initValues();
+    traj.add(point1);
+    traj.add(point2);
+    traj.add(point3);
     
-    algo.initVar();
+    algo.setupVal(traj, 10);
   }
   
   @Test
@@ -43,10 +44,13 @@ public class Tester {
     assertEquals(algo.deltaV, 0.015, 0.0001);
   }
   
-//  @Test
-//  public void testInitializeGrid() {
-//    
-//    assertEquals(algo.grid.get(0).get(0), new Cell());
-//    
-//  }
+  @Test
+  public void testInitializeGrid() {
+    
+    assertEquals(algo.grid.get(0).get(0).leftPoint, -1.65, 0.0001);
+    assertEquals(algo.grid.get(0).get(0).rightPoint, -5.3, 0.0001);
+    assertEquals(algo.grid.get(0).get(0).binP, 0);
+    assertEquals(algo.grid.get(0).get(0).posx, 0);
+    assertEquals(algo.grid.get(0).get(0).posy, 0);
+  }
 }
