@@ -96,16 +96,17 @@ public class Algo {
         currCell.posy = j;
       }
     }
+    this.findWinners();
   }
   
   
-  void completeGrid() {
+  void findWinners() {
     
     //halfCycle of data points, starting at zero-crossing point
-    //need a getter function for this, based on hardware readings/data
+    //need a getter function for this, based on energy meter input/data
     this.halfCycle = new ArrayList<Cell>();
     
-    //this step is only a temporary fix, needs to be implemented
+    //this step is only a temporary fix, needs to be done
     //in the getter function
     this.halfCycle.add(0, this.startCell);
     

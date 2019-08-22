@@ -52,5 +52,7 @@ public class Tester {
     assertEquals(algo.grid.get(0).get(0).binP, 0);
     assertEquals(algo.grid.get(0).get(0).posx, 0);
     assertEquals(algo.grid.get(0).get(0).posy, 0);
+    assertEquals(algo.grid.size(), 20);
+    assertEquals(algo.grid.get(2).size(), 20);
   }
 }
