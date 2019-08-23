@@ -4,8 +4,6 @@ public class Algo {
   
   //Aggregate sample
   ArrayList<Point> originalTraj;
-  ArrayList<Double> VSeq = new ArrayList<Double>();
-  ArrayList<Double> ISeq = new ArrayList<Double>();
   //current and voltage values need to be normalized
   ArrayList<ArrayList<Cell>> grid = new ArrayList<ArrayList<Cell>>();
   ArrayList<Cell> halfCycle;
@@ -31,14 +29,17 @@ public class Algo {
   //needs to work with incoming data, temporary fix
   public void setupVal(ArrayList<Point> traj, int nVal) {
     this.n = nVal;
-    this.initValues(traj);
+    this.originalTraj = traj;
+    //halfCycle of data points, starting at zero-crossing point
+    //need a getter function for this, based on energy meter input/data
+    this.halfCycle = new ArrayList<Cell>();
+    this.initValues();
     this.initializeGrid();
   }
   
   
   //find min and max values of V and I in originalTraj
-  <T extends Comparable<Point>> void initValues(ArrayList<Point> traj) {
-    this.originalTraj = traj;
+  <T extends Comparable<Point>> void initValues() {
     
     double tempV = this.originalTraj.get(0).vPoint;
     double tempI = this.originalTraj.get(0).iPoint;
@@ -102,12 +103,8 @@ public class Algo {
   
   void findWinners() {
     
-    //halfCycle of data points, starting at zero-crossing point
-    //need a getter function for this, based on energy meter input/data
-    this.halfCycle = new ArrayList<Cell>();
-    
-    //this step is only a temporary fix, needs to be done
-    //in the getter function
+    //this step is only a temporary fix, needs to be done in the getter 
+    //function. startCell needs to be the first object in halfCycle
     this.halfCycle.add(0, this.startCell);
     
     for (int i = 0; i < this.halfCycle.size(); i++) {
@@ -115,7 +112,6 @@ public class Algo {
     }
   }
   
-  //populateGrid() needs to start from zero-crossing point
   void setWinner(Cell startPoint, int acc) {
    
     int y = (int)startPoint.leftPoint;
