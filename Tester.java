@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class Tester {
   Algo algo = new Algo();
+  Cell tempCell = new Cell(3, 4, 0, 0, 0);
+  Cell tempCell2 = new Cell(.3, .4, 0, 0, 0);
   
   @Before
   public void setup() {
@@ -23,7 +25,7 @@ public class Tester {
   
   @Test
   public void testSetN() {
-    assertEquals(algo.n, 10);
+   assertEquals(algo.n, 2);
   }
   
   @Test
@@ -54,5 +56,18 @@ public class Tester {
     assertEquals(algo.grid.get(0).get(0).posy, 0);
     assertEquals(algo.grid.size(), 20);
     assertEquals(algo.grid.get(2).size(), 20);
+    ArrayList<Integer> hello = new ArrayList<Integer>();
+    hello.add(9);
+    hello.add(3);
+    
+  }
+  
+  @Test
+  public void testSetWinner() {
+    
+    algo.winner = tempCell;
+    algo.setWinner(algo.winner, 0);
+    assertEquals(algo.winner, tempCell);
+    algo.setWinner(tempCell2, 0);
   }
 }
